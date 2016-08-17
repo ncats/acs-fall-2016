@@ -1,6 +1,11 @@
-\documentclass{beamer}
+\documentclass[anchorcolor=blue,linkcolor=blue]{beamer}
 \usepackage{booktabs}
 \usepackage{amsmath}
+\usepackage{xcolor}
+
+\definecolor{links}{HTML}{07568E}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+
 %%\usepackage{blkarray}
 \mode<presentation>
 {
@@ -16,9 +21,9 @@
 }
 \usepackage[english]{babel}
 
-\title{What can your library do for you?}
+\title{\huge What can your library do for you?}
 \author{Rajarshi Guha, Dac-Trung Nguyen, Ajit Jadhav\\
-NIH NCATS}
+NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 
 \begin{document}
 
@@ -106,6 +111,13 @@ NIH NCATS}
   \end{center}
 \end{frame}
 
+%%%% per-term NB model
+\begin{frame}
+  \frametitle{Per-Term Na\"{i}ve Bayes Models}
+  
+\end{frame}
+
+%%%% Ending slides
 \begin{frame}
   \frametitle{Pitfalls}
   \centering{
@@ -126,7 +138,7 @@ NIH NCATS}
   \frametitle{Acknowledgements}
   \begin{itemize}
   \item Qiong Cheng (U. Miami)
-  \item Stephan Sch\"{u}rer (U. Miami)
+  \item Stephan Sch\"{u}rer (U. Miami)  
   \end{itemize}
 \end{frame}
 \end{document}
