@@ -70,7 +70,63 @@ NIH NCATS}
 
 \begin{frame}
   \frametitle{Assay Modeling}
-  \includegraphics[height=3.0in]{assaymodel}
+  \begin{center}
+    \includegraphics[width=0.9\paperwidth]{assaymodel}    
+  \end{center}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Workflow}
+  \begin{itemize}
+  \item Extract unique BAO terms and for each term identify annotated assays
+  \item Extract active compounds from this set of assays
+  \item Compute fingerprint bit distribution
+  \item Use these conditional bit distributions to identify the BAO terms that describe the assay that they are likely to be active in
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dataset Overview}
+  \begin{itemize}
+  \item Extracted 4010 Pubchem AIDs from BARD
+  \item Primary, confirmation, counterscreening assays
+  \item 154M outcomes
+  \item 740K compounds
+  \item 192 unique BAO terms
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dataset Overview}
+  \begin{center}
+  \includegraphics[width=0.5\textwidth]{img-outcomehistogram}
+  \includegraphics[width=0.5\textwidth]{img-bioassay-outcomes} \\
+  \includegraphics[width=0.5\textwidth]{img-termdepth}
+  \includegraphics[width=0.5\textwidth]{img-termassaycount} \\    
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Pitfalls}
+  \centering{
+    \parbox{0.75\textwidth}{
+      \textit{\color{red}If sufficiently annotated, compound behavior can be 
+        correlated to assay and biology characteristics}}
+}
+\vskip 1em
+  \begin{itemize}
+  \item A very abstract, possibly lossy, view of the effect of compounds on biology
+  \item Depends on correct and meaningful annotations
+  \item Annotations terms are context dependent, but this may not be considered when annotating a dataset
+  \item Depends on well designed structural keys
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Acknowledgements}
+  \begin{itemize}
+  \item Qiong Cheng (U. Miami)
+  \item Stephan Sch\"{u}rer (U. Miami)
+  \end{itemize}
+\end{frame}
 \end{document}
