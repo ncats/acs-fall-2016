@@ -114,7 +114,20 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 %%%% per-term NB model
 \begin{frame}
   \frametitle{Per-Term Na\"{i}ve Bayes Models}
-  
+  \begin{itemize}
+  \item Predict liklihood of a ontology term $T_i$ given a set of
+    features $\{B\}$
+  \item Model this using Na\"{i}ve Bayes in which the two classes are
+    $T_i$ and ``Other''
+  \item Results in a set of models $\{M_1, M_2, \cdots, M_N\}$ where $N$
+    is the number of unique ontology terms. \vskip 1em
+  \item For a new compound in library, obtain probability of term $T_i$ using
+    model $M_i$
+  \item Aggregate top $n$ terms from each model for each compound in
+    the library and select top $n$ terms
+  \item \textbf{Represents the set of ontology terms defining an assay in
+    which these compound would likely be active}  
+  \end{itemize}
 \end{frame}
 
 %%%% Ending slides
@@ -130,7 +143,8 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
   \item A very abstract, possibly lossy, view of the effect of compounds on biology
   \item Depends on correct and meaningful annotations
   \item Annotations terms are context dependent, but this may not be considered when annotating a dataset
-  \item Depends on well designed structural keys
+  \item The terms exhibit hierarchical relationships and ignoring them
+    is simplistic
   \end{itemize}
 \end{frame}
 
