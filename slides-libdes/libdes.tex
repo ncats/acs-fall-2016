@@ -112,23 +112,41 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 \end{frame}
 
 %%%% per-term NB model
+% \begin{frame}
+%   \frametitle{Per-Term Na\"{i}ve Bayes Models}
+%   \begin{itemize}
+%   \item Predict liklihood of being active, given an ontology term
+%     $T_i$ and given a set of  features $\{B\}$  
+%   \item Model this using Na\"{i}ve Bayes in which the two classes are
+%     $T_i$ and ``Other''
+%   \item Results in a set of models $\{M_1, M_2, \cdots, M_N\}$ where $N$
+%     is the number of unique ontology terms. \vskip 1em
+%   \item For a new compound in library, obtain probability of term $T_i$ using
+%     model $M_i$
+%   \item Aggregate top $k$ terms from each model for each compound in
+%     the library and select top $n$ terms
+%   \item \textbf{Represents the set of ontology terms defining an assay in
+%     which these compound would likely be active}  
+%   \end{itemize}
+% \end{frame}
+
 \begin{frame}
   \frametitle{Per-Term Na\"{i}ve Bayes Models}
   \begin{itemize}
-  \item Predict liklihood of being active, given an ontology term
-    $T_i$ and given a set of  features $\{B\}$  
-  \item Model this using Na\"{i}ve Bayes in which the two classes are
-    $T_i$ and ``Other''
-  \item Results in a set of models $\{M_1, M_2, \cdots, M_N\}$ where $N$
-    is the number of unique ontology terms. \vskip 1em
+  \item Predict liklihood of ontology term $T_i$ given a set of  features $\{B\}$  
+  \item Model this using Na\"{i}ve Bayes where we compute XXX
+  \item Results in two set of models $\{M_1, M_2, \cdots, M_N\}$, for
+    actives and inactives where $N$ is the number of unique ontology
+    terms. \vskip 1em
   \item For a new compound in library, obtain probability of term $T_i$ using
-    model $M_i$
+    model $M_i$ for actives, XXX
   \item Aggregate top $k$ terms from each model for each compound in
     the library and select top $n$ terms
   \item \textbf{Represents the set of ontology terms defining an assay in
     which these compound would likely be active}  
   \end{itemize}
 \end{frame}
+
 
 \begin{frame}
   \frametitle{Class Imbalances}
