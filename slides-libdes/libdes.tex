@@ -147,6 +147,24 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Per-Term Na\"{i}ve Bayes Models (2)}
+  \begin{itemize}
+  \item For a given ontology term $T_i$, predict whether a compound
+    will be active or not 
+  \item Model this using Na\"{i}ve Bayes, where we extract set of
+    actives and inactives from assays annotated with $T_i$
+  \item Results in a set of models $\{M_1, M_2, \cdots, M_N\}$,
+ \vskip 1em
+  \item For a new compound in library, obtain probability of being
+    active for term $T_i$ for all $i$ and take top $k$ terms
+  \item Aggregate top $k$ terms from all compounds in library
+  \item \textbf{Represents the set of ontology terms defining an assay in
+    which these compounds would likely be active}  
+  \end{itemize}
+\end{frame}
+
+
 
 \begin{frame}
   \frametitle{Class Imbalances}
