@@ -262,7 +262,13 @@ public class MolIndex extends Index {
         
         return count;
     }
-        
+
+    public MolEntryIterator iterator () throws IOException {
+        Transaction tx = env.beginTransaction(null, null);
+        Cursor cursor = db.openCursor(tx, null);
+        return new MolEntryIterator (tx, cursor);
+    }
+    
     /*
      * search MolEntry for range (inclusive) in mwt
      */
@@ -359,38 +365,93 @@ public class MolIndex extends Index {
         }
     }
 
+    public static class Entries {
+        public static void main (String[] argv) throws Exception {
+            if (argv.length == 0) {
+                System.err.println("Usage: MolIndex$Entries INDEX");
+                System.exit(1);
+            }
+
+            MolIndex index = new MolIndex (new File (argv[0]));
+            try (MolEntryIterator it = index.iterator()) {
+                while (it.hasNext()) {
+                    MolEntry me = it.next();
+                    BitSet bs = me.getFpBits();
+                    System.out.print(me.getKey()+" "+bs.cardinality());
+                    for (int b = bs.nextSetBit(0);
+                         b >= 0; b = bs.nextSetBit(b+1)) {
+                        System.out.print(" "+b);
+                    }
+                    System.out.println();
+                }
+            }
+            finally {
+                index.close();
+                Index.shutdown();
+            }
+        }
+    }
+
     public static class Fetch {
+        final MolIndex index;
+        
+        Fetch (String path) throws IOException {
+            File dir = new File (path);
+            if (!dir.exists()) {
+                logger.log(Level.SEVERE,
+                           "** Error: path "+path+" does not exist!");
+                System.exit(1);
+            }
+
+            index = new MolIndex (dir);
+        }
+
+        public boolean fetch (PrintStream ps, String key) throws Exception {
+            MolEntry me = index.get(key);
+            boolean found = false;
+            if (me != null) {
+                BitSet bs = me.getFpBits();
+                ps.print(key+ " "+bs.cardinality());
+                for (int b = bs.nextSetBit(0); b >= 0; b = bs.nextSetBit(b+1))
+                    ps.print(" "+b);
+                ps.println();
+                found = true;
+            }
+            return found;
+        }
+
+        public void close () throws IOException {
+            index.close();
+        }
+          
         public static void main (String[] argv) throws Exception {
             if (argv.length < 2) {
                 System.err.println("Usage: MolIndex$Fetch INDEX KEYS...");
+                System.err.println("where KEYS can be files or index keys");
                 System.exit(1);
             }
 
-            File dir = new File (argv[0]);
-            if (!dir.exists()) {
-                System.err.println
-                    ("** Error: path "+argv[0]+" does not exist!");
-                System.exit(1);
-            }
-
+            Fetch fetch = new Fetch (argv[0]);
             try {
-                MolIndex index = new MolIndex (dir);
                 for (int i = 1; i < argv.length; ++i) {
-                    MolEntry me = index.get(argv[i]);
-                    if (me != null) {
-                        BitSet bs = me.getFpBits();
-                        System.out.println(argv[i]+": atoms="
-                                           +me.getMol().getAtomCount()+" bonds="
-                                           +me.getMol().getBondCount()+" bits="
-                                           +bs.cardinality()+" "+bs);
+                    File file = new File (argv[i]);
+                    if (file.exists()) {
+                        BufferedReader br =
+                            new BufferedReader (new FileReader (file));
+                        for (String line; (line = br.readLine()) != null; ) {
+                            String tok = line.trim();
+                            fetch.fetch(System.out, tok);
+                        }
+                        br.close();
                     }
-                    else {
-                        System.out.println(argv[i]+": not found");
+                    else { // treat it as id
+                        if (!fetch.fetch(System.out, argv[i]))
+                            logger.warning(argv[i]+": not found!");
                     }
                 }
-                index.close();
             }
             finally {
+                fetch.close();
                 Index.shutdown();
             }
         }
@@ -473,6 +534,14 @@ public class MolIndex extends Index {
             finally {
                 Index.shutdown();
             }
+        }
+    }
+
+    public static void main (String[] argv) {
+        System.err.println("Please use one of the following classes instead:");
+        for (Class c : new Class[] { Build.class, Entries.class, Fetch.class,
+                                     Mwt.class, Popcnt.class}) {
+            System.err.println(c.getName());
         }
     }
 }
