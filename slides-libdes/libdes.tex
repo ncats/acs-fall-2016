@@ -112,21 +112,74 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 \end{frame}
 
 %%%% per-term NB model
+% \begin{frame}
+%   \frametitle{Per-Term Na\"{i}ve Bayes Models}
+%   \begin{itemize}
+%   \item Predict liklihood of being active, given an ontology term
+%     $T_i$ and given a set of  features $\{B\}$  
+%   \item Model this using Na\"{i}ve Bayes in which the two classes are
+%     $T_i$ and ``Other''
+%   \item Results in a set of models $\{M_1, M_2, \cdots, M_N\}$ where $N$
+%     is the number of unique ontology terms. \vskip 1em
+%   \item For a new compound in library, obtain probability of term $T_i$ using
+%     model $M_i$
+%   \item Aggregate top $k$ terms from each model for each compound in
+%     the library and select top $n$ terms
+%   \item \textbf{Represents the set of ontology terms defining an assay in
+%     which these compound would likely be active}  
+%   \end{itemize}
+% \end{frame}
+
 \begin{frame}
   \frametitle{Per-Term Na\"{i}ve Bayes Models}
   \begin{itemize}
-  \item Predict liklihood of a ontology term $T_i$ given a set of
-    features $\{B\}$
-  \item Model this using Na\"{i}ve Bayes in which the two classes are
-    $T_i$ and ``Other''
-  \item Results in a set of models $\{M_1, M_2, \cdots, M_N\}$ where $N$
-    is the number of unique ontology terms. \vskip 1em
+  \item Predict liklihood of ontology term $T_i$ given a set of  features $\{B\}$  
+  \item Model this using Na\"{i}ve Bayes where we compute XXX
+  \item Results in two set of models $\{M_1, M_2, \cdots, M_N\}$, for
+    actives and inactives where $N$ is the number of unique ontology
+    terms. \vskip 1em
   \item For a new compound in library, obtain probability of term $T_i$ using
-    model $M_i$
-  \item Aggregate top $n$ terms from each model for each compound in
+    model $M_i$ for actives, XXX
+  \item Aggregate top $k$ terms from each model for each compound in
     the library and select top $n$ terms
   \item \textbf{Represents the set of ontology terms defining an assay in
     which these compound would likely be active}  
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Per-Term Na\"{i}ve Bayes Models (2)}
+  \begin{itemize}
+  \item For a given ontology term $T_i$, predict whether a compound
+    will be active or not 
+  \item Model this using Na\"{i}ve Bayes, where we extract set of
+    actives and inactives from assays annotated with $T_i$
+  \item Results in a set of models $\{M_1, M_2, \cdots, M_N\}$,
+ \vskip 1em
+  \item For a new compound in library, obtain probability of being
+    active for term $T_i$ for all $i$ and take top $k$ terms
+  \item Aggregate top $k$ terms from all compounds in library
+  \item \textbf{Represents the set of ontology terms defining an assay in
+    which these compounds would likely be active}  
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Class Imbalances}
+\centering{
+  \parbox{0.75\textwidth}{ Imbalanced classes are problematic, though
+    some of the terms with near-balanced classes are not very specific
+    (e.g., \texttt{imaging method})
+  }}\vskip 1em
+    \includegraphics[width=0.9\textwidth]{img-nbclassratio-v2}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Training Set Performance}
+  \begin{itemize}
+  \item Matthews Correlation Coefficient
   \end{itemize}
 \end{frame}
 
@@ -143,7 +196,7 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
   \item A very abstract, possibly lossy, view of the effect of compounds on biology
   \item Depends on correct and meaningful annotations
   \item Annotations terms are context dependent, but this may not be considered when annotating a dataset
-  \item The terms exhibit hierarchical relationships and ignoring them
+  \item BAO terms exhibit hierarchical relationships and ignoring them
     is simplistic
   \end{itemize}
 \end{frame}
