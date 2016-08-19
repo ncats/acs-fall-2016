@@ -263,6 +263,16 @@ public class MolIndex extends Index {
         return count;
     }
 
+    public long size () {
+        try {
+            return db.count();
+        }
+        catch (Exception ex) {
+            logger.log(Level.SEVERE, "Db.count() fails", ex);
+        }
+        return -1l;
+    }
+
     public MolEntryIterator iterator () throws IOException {
         Transaction tx = env.beginTransaction(null, null);
         Cursor cursor = db.openCursor(tx, null);

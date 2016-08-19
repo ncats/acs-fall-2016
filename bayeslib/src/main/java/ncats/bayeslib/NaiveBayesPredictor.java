@@ -78,11 +78,16 @@ public class NaiveBayesPredictor {
 
         final Map<String, Double> cumulative = new HashMap<String, Double>();
         try (MolIndex.MolEntryIterator it = index.iterator()) {
-            MolIndex.MolEntry me = it.next();
-            for (NaiveBayesModel model : models) {
-                double prob = model.getPosterior(me.getFpBits());
-                Double c = cumulative.get(model.getName());
-                cumulative.put(model.getName(), c == null ? prob : (prob+c));
+            while (it.hasNext()) {
+                MolIndex.MolEntry me = it.next();
+                //System.out.println("["+me.getKey()+"]");
+                for (NaiveBayesModel model : models) {
+                    double prob = model.getPosterior(me.getFpBits());
+                    //System.out.println(model.getName()+" "+prob);
+                    Double c = cumulative.get(model.getName());
+                    cumulative.put
+                        (model.getName(), c == null ? prob : (prob+c));
+                }
             }
         }
         
@@ -98,9 +103,10 @@ public class NaiveBayesPredictor {
             });
 
         List<Predictor> results = new ArrayList<Predictor>();
+        double size = (double)index.size();
         for (String l : labels) {
             // normalize 
-            results.add(new Predictor (l, cumulative.get(l)/models.size()));
+            results.add(new Predictor (l, cumulative.get(l)/size));
         }
         return results;
     }
@@ -127,7 +133,7 @@ public class NaiveBayesPredictor {
             }
 
             for (Predictor p : nbp.eval()) {
-                System.out.println(p);
+                System.out.println(p.getLabel()+"\t"+p.getScore());
             }
         }
         finally {
