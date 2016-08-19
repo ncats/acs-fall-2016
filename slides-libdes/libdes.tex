@@ -183,6 +183,31 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
   \end{itemize}
 \end{frame}
 
+
+\begin{frame}
+  \frametitle{Applying it to Some Libraries}
+  \begin{itemize}
+  \item Workflow starts with an individual compound - will it be
+    active in the model for term $T_i$?
+  \item Find the top $k$ terms that predict an active class
+  \item For a library with $N_c$ compounds, we will have $kN_c$ terms
+  \end{itemize}
+\vskip 1em
+  \centering{
+    \parbox{0.75\textwidth}{\textbf{We take the top $k$ most frequent terms as
+      the set of annotations describing an assay in which the library
+      will show activity in}}
+  }
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Applying it to Some Libraries}
+    \begin{center}
+      \includegraphics[width=1.1\textwidth]{img-predset-rankedterms.pdf}      
+    \end{center}
+  \end{frame}
+
+
 %%%% Ending slides
 \begin{frame}
   \frametitle{Pitfalls}
