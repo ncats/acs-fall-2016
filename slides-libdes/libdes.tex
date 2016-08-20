@@ -3,6 +3,9 @@
 \usepackage{amsmath}
 \usepackage{xcolor}
 
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand{\rank}{\operatornamewithlimits{rank}}
+
 \definecolor{links}{HTML}{07568E}
 \hypersetup{colorlinks,linkcolor=,urlcolor=links}
 
@@ -129,6 +132,48 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 %     which these compound would likely be active}  
 %   \end{itemize}
 % \end{frame}
+
+\begin{frame}
+  \frametitle{Problem formulation}
+  For a given library of compounds $X$, we would like to calculate a
+  ranked list $T$ of BAO terms that are most likely associated with
+  $X$. Let $\mathbf{x} \in X$ and $t$ is a BAO term. The list $T$ is
+  an ordered list based on the following:
+  \begin{equation}
+  \argmax_{i}\left\{\sum_jp(t_i|\mathbf{x}_j)\right\},
+  \end{equation}
+  where $p(t_i|\mathbf{x}_j)$ is the probability that BAO term $t_i$
+  is associated with compound $\mathbf{x}_j$. From Bayes' rule, we have
+  \[
+    p(t_i|\mathbf{x}_j) = \frac{p(\mathbf{x}_j|t_i)p(t_i)}{p(\mathbf{x}_j)}
+    \quad\hbox{or} \quad p(t_i|\mathbf{x}_j) \propto p(\mathbf{x}_j|t_i)p(t_i).
+  \]
+  Given that BAO terms are annotated at the assay level, we instead
+  have 
+  \begin{equation}
+    p(t_i|\mathbf{x}_j) \propto p(t_i)\sum_kp(\mathbf{x}_j|a_k)p(a_k|t_i),
+  \end{equation}
+  where $a_k$ is a BAO annotated assay.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Na\"{i}ve Bayes Model}
+  Note that $p(\mathbf{x}_j|a_k)$ is the sampling function specified
+  over only \emph{active} compounds in assay $a_k$. In our model,
+  $\mathbf{x}_j$ is defined as independent Bernoulli distribution with
+  parameter $\theta$, i.e., 
+\[ p(\mathbf{x}_j|a_k) =
+\prod_i\theta_i^{x_{ji}}(1-\theta_i)^{1-x_{ji}},\]
+where $x_{ji}\in\{0,1\}$ is the $i$-th bit of the PubChem
+substructural fingerprint. 
+
+\begin{block}{}
+\begin{color}{blue}
+Learning BAO terms for a library of
+compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$. 
+\end{color}
+\end{block}
+\end{frame}
 
 \begin{frame}
   \frametitle{Per-Term Na\"{i}ve Bayes Models}
