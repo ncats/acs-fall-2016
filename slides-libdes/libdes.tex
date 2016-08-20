@@ -226,7 +226,13 @@ compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$.
   \end{itemize}
 \end{frame}
 
-
+\begin{frame}
+  \frametitle{Term Depth vs Rank}
+  \begin{itemize}
+  \item Do more specific terms get ranked highly?
+  \item Which terms get ranked is driven by frequency of usage across assays
+  \end{itemize}
+\end{frame}
 
 % \begin{frame}
 %   \frametitle{Training Set Performance}
@@ -245,37 +251,47 @@ compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$.
   \item Natural Products (5000 compounds)
   \item 1000 member subset of ChEMBL GPCR collection 
   \item 1000 member subset of ChEMBL Kinase collection
-\vskip 2em
-\item In the Pubchem fingerprint space, the libraries are not very different
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Test Libraries}
-  \includegraphics[width=\textwidth]{img-psetbs.pdf}  
+In the Pubchem fingerprint space, the libraries are not very different
+\vskip 1em
+  \includegraphics[width=0.9\textwidth]{img-psetbs.pdf}  
 \end{frame}
 
 \begin{frame}
-  \frametitle{Test Libraries}
+  \frametitle{Test Libraries - Distance Matrix}
   \includegraphics[width=0.9\textwidth]{img-psetbs-distmap.pdf}  
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{Applying it to Some Libraries}
-  \begin{itemize}
-  \item Workflow starts with an individual compound - will it be
-    active in the model for term $T_i$?
-  \item Find the top $k$ terms that predict an active class
-  \item For a library with $N_c$ compounds, we will have $kN_c$ terms
-  \end{itemize}
+  \frametitle{Prediction Workflow}
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \textbf{Bayesian Ranking}
+      \begin{itemize}
+      \item Compute liklihood of all terms for each compound
+      \item Aggregate across library (mean liklihood) and take top $k$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{Activity Models}
+      \begin{itemize}
+      \item For molecules predicted active, collect corresponding terms
+      \item Retain the top $k$ most frequent terms across the library
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \vskip 1em
   \centering{
-    \parbox{0.75\textwidth}{\textbf{We take the top $k$ most frequent terms as
+    \parbox{0.75\textwidth}{\textbf{We take the top $k$  terms as
       the set of annotations describing an assay in which the library
       will show activity in}}
   }
-  \end{frame}
+\end{frame}
+
 
   \begin{frame}
     \frametitle{Result - Per Term Activity Classifier}
