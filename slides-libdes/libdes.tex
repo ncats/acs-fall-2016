@@ -153,7 +153,7 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 \begin{frame}
   \frametitle{Problem formulation}
   For a given library of compounds $X$, we would like to calculate a
-  ranked list $T$ of BAO terms that are most likely associated with
+  ranked list \emph{relevant} $T$ of BAO terms that are most likely associated with
   $X$. Let $\mathbf{x} \in X$ and $t$ is a BAO term. The list $T$ is
   an ordered list based on the following:
   \begin{equation}
@@ -174,7 +174,7 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Na\"{i}ve Bayes Model}
+  \frametitle{A Bayesian Approach for Ranking}
   Note that $p(\mathbf{x}_j|a_k)$ is the sampling function specified
   over only \emph{active} compounds in assay $a_k$. In our model,
   $\mathbf{x}_j$ is defined as independent Bernoulli distribution with
@@ -210,7 +210,7 @@ compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$.
 % \end{frame}
 
 \begin{frame}
-  \frametitle{Per-Term Activity Model}
+  \frametitle{Per-Term Activity Classifier}
   \begin{itemize}
   \item For a given ontology term $T_i$, predict whether a compound
     will be active or not 
@@ -278,7 +278,7 @@ compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$.
   \end{frame}
 
   \begin{frame}
-    \frametitle{Applying it to Some Libraries}
+    \frametitle{Result - Per Term Activity Classifier}
     \begin{center}
       \includegraphics[width=1.1\textwidth]{img-predset-rankedterms.pdf}      
     \end{center}
