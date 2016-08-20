@@ -62,28 +62,36 @@ public class NaiveBayesTrainer {
     }
     
     public static void main (String[] argv) throws Exception {
-        if (argv.length < 4) {
+        if (argv.length < 2) {
             logger.info
-                ("Usage: NaiveBayesTrainer INDEX NAME POS NEG\n"
+                ("Usage: NaiveBayesTrainer INDEX NAME [POS NEG]\n"
                  +"where INDEX is the index built by ncats.bayeslib.MolIndex$Build\n"
                  +"NAME is the name of the model (e.g., BAO_0000519)\n"
-                 +"POS is the file of all keys for positive/active instances\n"
-                 +"NEG is the file of all keys of negative/inactive instances."
+                 +"POS is the file of all keys for positive/active instances; if not specified, default to {NAME}_POS.txt\n"
+                 +"NEG is the file of all keys of negative/inactive instances; if not specified, default to {NAME}_NEG.txt"
                  );
             System.exit(1);
         }
 
-        NaiveBayesTrainer nbt = new NaiveBayesTrainer (argv[0]);        
+        File path = new File (System.getProperty("bayeslib.path", "."));
+        logger.info("## working path: "+path);
+
+        NaiveBayesTrainer nbt = new NaiveBayesTrainer (argv[0]);
         try {
             String name = argv[1];
-            int n = nbt.load(name, new File (argv[2]), true);
-            logger.info(argv[2]+": "+n+" positive sample(s) loaded!");
+
+            File pos = new File 
+                (path, argv.length > 2 ? argv[2] : name+"_POS.txt");
+            int n = nbt.load(name, pos, true);
+            logger.info(pos+": "+n+" positive sample(s) loaded!");
             
-            n = nbt.load(name, new File (argv[3]), false);
-            logger.info(argv[3]+": "+n+" negative sample(s) loaded!");
+            File neg = new File
+                (path, argv.length > 3 ? argv[3] : name+"_NEG.txt");
+            n = nbt.load(name, neg, false);
+            logger.info(neg+": "+n+" negative sample(s) loaded!");
             
             NaiveBayesModel model = nbt.getModel(name);
-            model.bitSelection(51);
+            model.bitSelection(41);
             String file = model.save();
             logger.info("Model "+name+" saved into file '"+file+"'!");
         }

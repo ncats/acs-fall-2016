@@ -54,7 +54,12 @@ public class NaiveBayesPredictor {
         }
         else if (file.isDirectory()) {
             for (File f : file.listFiles()) {
-                loadModel (f);
+                try {
+                    loadModel (f);
+                }
+                catch (IOException ex) {
+                    logger.log(Level.SEVERE, "Can't load model: "+f, ex);
+                }
             }
         }
         else {

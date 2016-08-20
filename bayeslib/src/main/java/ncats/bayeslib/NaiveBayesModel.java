@@ -249,7 +249,8 @@ public class NaiveBayesModel {
         String bits = props.getProperty("bits");
         if (bits != null) {
             for (String b : bits.split(",")) {
-                model.bitSelection.set(Integer.parseInt(b));
+                if (!b.equals(""))
+                    model.bitSelection.set(Integer.parseInt(b));
             }
         }
 

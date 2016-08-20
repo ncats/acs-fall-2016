@@ -363,13 +363,13 @@ public class MolIndex extends Index {
             catch (Exception ex) {
                 is = new FileInputStream (file);
             }
-            
+
+            MolIndex index = new MolIndex (dir);            
             try {
-                MolIndex index = new MolIndex (dir);
                 index.add(is, argv.length > 2 ? argv[2] : null);
-                index.close();
             }
             finally {
+                index.close();
                 Index.shutdown();
             }
         }
