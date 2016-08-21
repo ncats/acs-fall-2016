@@ -105,8 +105,9 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
   \item Primary, confirmation, counterscreening assays
   \item 154M outcomes
   \item 740K compounds
-  \item Pubchem 881-bit fingerprints computed using the CDK
-  \item 192 unique BAO terms
+  \item Pubchem 881-bit keys using \href{http://cdk.github.io/cdk/1.5/docs/api/org/openscience/cdk/fingerprint/PubchemFingerprinter.html}{CDK} and
+    \href{https://bitbucket.org/caodac/pcfp}{NCGC} implementations  
+  \item 192 unique BAO terms  
   \end{itemize}
 \end{frame}
 
@@ -226,13 +227,6 @@ compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$.
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Term Depth vs Rank}
-  \begin{itemize}
-  \item Do more specific terms get ranked highly?
-  \item Which terms get ranked is driven by frequency of usage across assays
-  \end{itemize}
-\end{frame}
 
 % \begin{frame}
 %   \frametitle{Training Set Performance}
@@ -284,7 +278,7 @@ In the Pubchem fingerprint space, the libraries are not very different
       \end{itemize}
     \end{column}
   \end{columns}
-\vskip 1em
+\vskip 2em
   \centering{
     \parbox{0.75\textwidth}{\textbf{We take the top $k$  terms as
       the set of annotations describing an assay in which the library
@@ -293,6 +287,13 @@ In the Pubchem fingerprint space, the libraries are not very different
 \end{frame}
 
 
+\begin{frame}
+  \frametitle{Result - Bayesian Ranking}
+  \begin{center}
+    \includegraphics[height=0.9\textheight]{img-predset-rankedterms-trung.pdf}      
+  \end{center}
+\end{frame}
+
   \begin{frame}
     \frametitle{Result - Per Term Activity Classifier}
     \begin{center}
@@ -300,6 +301,22 @@ In the Pubchem fingerprint space, the libraries are not very different
     \end{center}
   \end{frame}
 
+  \begin{frame}
+    \frametitle{What's Different Between Libraries?}
+      \includegraphics[height=0.9\textheight]{img-diff-lopac-vs-mipe}      
+  \end{frame}
+  \begin{frame}
+    \frametitle{What's Different Between Libraries?}
+      \includegraphics[height=0.9\textheight]{img-diff-np-vs-mipe}      
+  \end{frame}
+
+\begin{frame}
+  \frametitle{Term Depth vs Rank}
+  \begin{itemize}
+  \item Do more specific terms get ranked highly?
+  \item Which terms get ranked is driven by frequency of usage across assays
+  \end{itemize}
+\end{frame}
 
 %%%% Ending slides
 \begin{frame}
@@ -317,6 +334,9 @@ In the Pubchem fingerprint space, the libraries are not very different
   \item BAO terms exhibit hierarchical relationships and ignoring them
     is simplistic
   \end{itemize}
+\vskip 2em
+\Large{\href{https://spotlite.nih.gov/ncats/acs-fall-2016/tree/master}{Source
+code and slides}}
 \end{frame}
 
 \begin{frame}
