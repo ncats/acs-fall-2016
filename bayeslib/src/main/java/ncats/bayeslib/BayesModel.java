@@ -15,68 +15,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import tripod.fingerprint.PCFP;
 
-public class BAOTrain {
-    static final Logger logger = Logger.getLogger(BAOTrain.class.getName());
+public class BayesModel extends Bayes {
+    static final Logger logger = Logger.getLogger(BayesModel.class.getName());
 
-    static class Assay implements Comparable<Assay> {
-        public final Long aid;
-        public int count; // activity count
-        public double prob; // p(a|t)
-        public int[] bins = new int[PCFP.FP_SIZE];
-        public Set<Term> terms = new TreeSet<Term>();
-
-        Assay (Long aid) {
-            this.aid = aid;
-        }
-        public int hashCode () { return aid.hashCode(); }
-        public boolean equals (Object o) {
-            if (o instanceof Assay)
-                return aid.equals(((Assay)o).aid);
-            return false;
-        }
-        public int compareTo (Assay a) {
-            if (aid < a.aid) return -1;
-            if (aid > a.aid) return 1;
-            return 0;
-        }
-        
-        public Collection<String> getTerms () {
-            List<String> col = new ArrayList<String>();
-            for (Term t : terms)
-                col.add(t.term);
-            return col;
-        }
-    }
-
-    static class Term implements Comparable<Term> {
-        public final String term;
-        public int count;
-        public double prob;
-        public Set<Assay> assays = new TreeSet<Assay>();
-        
-        Term (String term) {
-            this.term = term;
-        }
-
-        public int hashCode () { return term.hashCode(); }
-        public boolean equals (Object o) {
-            if (o instanceof Term) {
-                return term.equals(((Term)o).term);
-            }
-            return false;
-        }
-        
-        public int compareTo (Term t) {
-            return term.compareTo(t.term);
-        }
-    }
-
-    final MolIndex index;
     final Map<Long, Assay> assays = new HashMap<Long, Assay>();
     final Map<String, Term> terms = new HashMap<String, Term>();
 
-    public BAOTrain (String index, String anno) throws IOException {
-        this.index = new MolIndex (new File (index));
+    public BayesModel (String index, String anno) throws IOException {
+        super (index);
 
         /*
          * sample format of anno file:
@@ -127,10 +73,6 @@ BID,AIDs,BAOIDs
             a.prob = (double)a.terms.size()/terms.size();
     }
 
-    public void close () throws IOException {
-        index.close();
-    }
-
     /* sample format:
 aid,cid,outcome,score
 1002,663743,Active,58
@@ -168,10 +110,11 @@ aid,cid,outcome,score
                     continue;
                 }
 
-                ++assay.count;
+                ++assay.total;
                 if (!"active".equalsIgnoreCase(fields[2])) {
                     continue;
                 }
+                ++assay.count;          
 
                 MolIndex.MolEntry me = index.get(fields[1]);
                 if (me != null) {
@@ -208,14 +151,14 @@ aid,cid,outcome,score
 
     public static void main (String[] argv) throws Exception {
         if (argv.length < 2) {
-            System.err.println("Usage: BAOTrain INDEX ANNO [BIOASSAY]");
+            System.err.println("Usage: BayesModel INDEX ANNO [BIOASSAY]");
             System.err.println("where INDEX is the index built by ncats.bayeslib.MolIndex$Build");
             System.err.println("ANNO is the mapping of BAO terms to assays");
             System.err.println("BIOASSAY is the compound assay activity data; if not specified, read from STDIN");
             System.exit(1);
         }
 
-        BAOTrain bt = new BAOTrain (argv[0], argv[1]);
+        BayesModel bt = new BayesModel (argv[0], argv[1]);
         try {
             if (argv.length > 2)
                 bt.train(argv[2]);
