@@ -46,8 +46,10 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
     \end{itemize}
   \item Libraries can be designed for certain target families or
     specific screening paradigms
-  \item If sufficiently annotated, compound behavior can be correlated to assay and biology characteristics
-  \end{itemize}
+\end{itemize}
+\vskip 2em
+\centering{\parbox{0.75\textwidth}{\textbf{If sufficiently annotated, compound behavior may be correlated
+    to assay and biology characteristics}}}
 \end{frame}
 
 \begin{frame}
@@ -303,19 +305,22 @@ In the Pubchem fingerprint space, the libraries are not very different
 
   \begin{frame}
     \frametitle{What's Different Between Libraries?}
-      \includegraphics[height=0.9\textheight]{img-diff-lopac-vs-mipe}      
+    \begin{center}
+      \includegraphics[height=0.9\textheight]{img-diff-lopac-vs-mipe}
+    \end{center}
   \end{frame}
   \begin{frame}
     \frametitle{What's Different Between Libraries?}
-      \includegraphics[height=0.9\textheight]{img-diff-np-vs-mipe}      
+    \begin{center}
+      \includegraphics[height=0.9\textheight]{img-diff-np-vs-mipe}
+    \end{center}
+
   \end{frame}
 
 \begin{frame}
-  \frametitle{Term Depth vs Rank}
-  \begin{itemize}
-  \item Do more specific terms get ranked highly?
-  \item Which terms get ranked is driven by frequency of usage across assays
-  \end{itemize}
+  \frametitle{Term Depth for the 'Differential' Terms}
+\includegraphics[width=0.5\textwidth]{img-termdepth-lopac-mipe}
+\includegraphics[width=0.5\textwidth]{img-termdepth-np-mipe}
 \end{frame}
 
 %%%% Ending slides
@@ -323,7 +328,7 @@ In the Pubchem fingerprint space, the libraries are not very different
   \frametitle{Pitfalls}
   \centering{
     \parbox{0.75\textwidth}{
-      \textit{\color{red}If sufficiently annotated, compound behavior can be 
+      \textit{\color{red}If sufficiently annotated, compound behavior may be 
         correlated to assay and biology characteristics}}
 }
 \vskip 1em
@@ -334,9 +339,6 @@ In the Pubchem fingerprint space, the libraries are not very different
   \item BAO terms exhibit hierarchical relationships and ignoring them
     is simplistic
   \end{itemize}
-\vskip 2em
-\Large{\href{https://spotlite.nih.gov/ncats/acs-fall-2016/tree/master}{Source
-code and slides}}
 \end{frame}
 
 \begin{frame}
@@ -345,5 +347,13 @@ code and slides}}
   \item Qiong Cheng (U. Miami)
   \item Stephan Sch\"{u}rer (U. Miami)  
   \end{itemize}
+
+\vskip 2em
+\hrule
+\vskip 4em
+\centering{
+\textbf{\huge{\href{https://spotlite.nih.gov/ncats/acs-fall-2016/tree/master}{Source
+code and slides}}}}
+
 \end{frame}
 \end{document}
