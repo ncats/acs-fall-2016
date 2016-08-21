@@ -44,6 +44,8 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
     \begin{itemize}
     \item Plus various constraints
     \end{itemize}
+  \item Libraries can be designed for certain target families or
+    specific screening paradigms
   \item If sufficiently annotated, compound behavior can be correlated to assay and biology characteristics
   \end{itemize}
 \end{frame}
@@ -53,6 +55,18 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
   How likely are compounds, associated with a  given annotation, identified as active?
   \vskip 2em
   Given a new set of compounds, what sets of assay conditions (as implied by the annotations) will they be active in? 
+\end{frame}
+
+\begin{frame}
+  \frametitle{BAO 2.0}
+  \includegraphics[height=3.0in]{bao}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Assay Modeling}
+  \begin{center}
+    \includegraphics[width=0.9\paperwidth]{assaymodel}    
+  \end{center}
 \end{frame}
 
 \begin{frame}
@@ -73,19 +87,8 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{BAO 2.0}
-  \includegraphics[height=3.0in]{bao}
-\end{frame}
 
-\begin{frame}
-  \frametitle{Assay Modeling}
-  \begin{center}
-    \includegraphics[width=0.9\paperwidth]{assaymodel}    
-  \end{center}
-\end{frame}
-
-\begin{frame}
+\begin{frame} 
   \frametitle{Workflow}
   \begin{itemize}
   \item Extract unique BAO terms and for each term identify annotated assays
@@ -102,6 +105,7 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
   \item Primary, confirmation, counterscreening assays
   \item 154M outcomes
   \item 740K compounds
+  \item Pubchem 881-bit fingerprints computed using the CDK
   \item 192 unique BAO terms
   \end{itemize}
 \end{frame}
@@ -109,12 +113,23 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 \begin{frame}
   \frametitle{Dataset Overview}
   \begin{center}
-  \includegraphics[width=0.5\textwidth]{img-outcomehistogram}
-  \includegraphics[width=0.5\textwidth]{img-bioassay-outcomes} \\
+  \includegraphics[width=0.5\textwidth]{img-bioassay-outcomes} 
+  \includegraphics[width=0.5\textwidth]{img-outcomehistogram} \\
   \includegraphics[width=0.5\textwidth]{img-termdepth}
   \includegraphics[width=0.5\textwidth]{img-termassaycount} \\    
   \end{center}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Class Imbalances}
+\centering{
+  \parbox{0.75\textwidth}{ Imbalanced classes are problematic, and
+    some of the terms with near-balanced classes are not very specific
+    (e.g., \texttt{imaging method})
+  }}\vskip 1em
+    \includegraphics[width=0.9\textwidth]{img-nbclassratio-v2}
+\end{frame}
+
 
 %%%% per-term NB model
 % \begin{frame}
@@ -138,7 +153,7 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 \begin{frame}
   \frametitle{Problem formulation}
   For a given library of compounds $X$, we would like to calculate a
-  ranked list $T$ of BAO terms that are most likely associated with
+  ranked list \emph{relevant} $T$ of BAO terms that are most likely associated with
   $X$. Let $\mathbf{x} \in X$ and $t$ is a BAO term. The list $T$ is
   an ordered list based on the following:
   \begin{equation}
@@ -159,7 +174,7 @@ NIH NCATS\\ \vskip 2em \textit{ACS Fall Meeting 2016, Philadelphia}}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Na\"{i}ve Bayes Model}
+  \frametitle{A Bayesian Approach for Ranking}
   Note that $p(\mathbf{x}_j|a_k)$ is the sampling function specified
   over only \emph{active} compounds in assay $a_k$. In our model,
   $\mathbf{x}_j$ is defined as independent Bernoulli distribution with
@@ -177,25 +192,25 @@ compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$.
 \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Per-Term Na\"{i}ve Bayes Models}
-  \begin{itemize}
-  \item Predict liklihood of ontology term $T_i$ given a set of  features $\{B\}$  
-  \item Model this using Na\"{i}ve Bayes where we compute XXX
-  \item Results in two set of models $\{M_1, M_2, \cdots, M_N\}$, for
-    actives and inactives where $N$ is the number of unique ontology
-    terms. \vskip 1em
-  \item For a new compound in library, obtain probability of term $T_i$ using
-    model $M_i$ for actives, XXX
-  \item Aggregate top $k$ terms from each model for each compound in
-    the library and select top $n$ terms
-  \item \textbf{Represents the set of ontology terms defining an assay in
-    which these compound would likely be active}  
-  \end{itemize}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Per-Term Na\"{i}ve Bayes Models}
+%   \begin{itemize}
+%   \item Predict liklihood of ontology term $T_i$ given a set of  features $\{B\}$  
+%   \item Model this using Na\"{i}ve Bayes where we compute XXX
+%   \item Results in two set of models $\{M_1, M_2, \cdots, M_N\}$, for
+%     actives and inactives where $N$ is the number of unique ontology
+%     terms. \vskip 1em
+%   \item For a new compound in library, obtain probability of term $T_i$ using
+%     model $M_i$ for actives, XXX
+%   \item Aggregate top $k$ terms from each model for each compound in
+%     the library and select top $n$ terms
+%   \item \textbf{Represents the set of ontology terms defining an assay in
+%     which these compound would likely be active}  
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}
-  \frametitle{Per-Term Na\"{i}ve Bayes Models (2)}
+  \frametitle{Per-Term Activity Classifier}
   \begin{itemize}
   \item For a given ontology term $T_i$, predict whether a compound
     will be active or not 
@@ -211,16 +226,12 @@ compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$.
   \end{itemize}
 \end{frame}
 
-
-
 \begin{frame}
-  \frametitle{Class Imbalances}
-\centering{
-  \parbox{0.75\textwidth}{ Imbalanced classes are problematic, though
-    some of the terms with near-balanced classes are not very specific
-    (e.g., \texttt{imaging method})
-  }}\vskip 1em
-    \includegraphics[width=0.9\textwidth]{img-nbclassratio-v2}
+  \frametitle{Term Depth vs Rank}
+  \begin{itemize}
+  \item Do more specific terms get ranked highly?
+  \item Which terms get ranked is driven by frequency of usage across assays
+  \end{itemize}
 \end{frame}
 
 % \begin{frame}
@@ -238,37 +249,52 @@ compounds amounts to estimating $\theta$, $p(t_i)$, and $p(a_k|t_i)$.
   \item MIPE (1912 compounds) - Approved, investigational drugs, constructed for functional diversity
   \item LOPAC (1280 compounds) - Diverse library, designed for enrichment of bioactivity
   \item Natural Products (5000 compounds)
-  \item Random subsets of ChEMBL GPCR collection (1000 compounds)
-  \item Random subsets of ChEMBL Kinase collection (1000 compounds)
-\vskip 2em
-\item In the Pubchem fingerprint space, the libraries are not very different
+  \item 1000 member subset of ChEMBL GPCR collection 
+  \item 1000 member subset of ChEMBL Kinase collection
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Test Libraries}
-  \includegraphics[width=\textwidth]{img-psetbs.pdf}  
+In the Pubchem fingerprint space, the libraries are not very different
+\vskip 1em
+  \includegraphics[width=0.9\textwidth]{img-psetbs.pdf}  
 \end{frame}
 
+\begin{frame}
+  \frametitle{Test Libraries - Distance Matrix}
+  \includegraphics[width=0.9\textwidth]{img-psetbs-distmap.pdf}  
+\end{frame}
 
 \begin{frame}
-  \frametitle{Applying it to Some Libraries}
-  \begin{itemize}
-  \item Workflow starts with an individual compound - will it be
-    active in the model for term $T_i$?
-  \item Find the top $k$ terms that predict an active class
-  \item For a library with $N_c$ compounds, we will have $kN_c$ terms
-  \end{itemize}
+  \frametitle{Prediction Workflow}
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \textbf{Bayesian Ranking}
+      \begin{itemize}
+      \item Compute liklihood of all terms for each compound
+      \item Aggregate across library (mean liklihood) and take top $k$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{Activity Models}
+      \begin{itemize}
+      \item For molecules predicted active, collect corresponding terms
+      \item Retain the top $k$ most frequent terms across the library
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \vskip 1em
   \centering{
-    \parbox{0.75\textwidth}{\textbf{We take the top $k$ most frequent terms as
+    \parbox{0.75\textwidth}{\textbf{We take the top $k$  terms as
       the set of annotations describing an assay in which the library
       will show activity in}}
   }
-  \end{frame}
+\end{frame}
+
 
   \begin{frame}
-    \frametitle{Applying it to Some Libraries}
+    \frametitle{Result - Per Term Activity Classifier}
     \begin{center}
       \includegraphics[width=1.1\textwidth]{img-predset-rankedterms.pdf}      
     \end{center}
